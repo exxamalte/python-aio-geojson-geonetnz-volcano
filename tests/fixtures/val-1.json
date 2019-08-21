@@ -1,0 +1,56 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          175.896,
+          -38.784
+        ]
+      },
+      "properties": {
+        "volcanoID": "volcano1",
+        "volcanoTitle": "Volcano 1",
+        "level": 0,
+        "activity": "No volcanic unrest.",
+        "hazards": "Volcanic environment hazards."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          175.641727,
+          -39.133318
+        ]
+      },
+      "properties": {
+        "volcanoID": "volcano2",
+        "volcanoTitle": "Volcano 2",
+        "level": 0,
+        "activity": "No volcanic unrest.",
+        "hazards": "Volcanic environment hazards."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          177.183,
+          -37.521
+        ]
+      },
+      "properties": {
+        "volcanoID": "volcano3",
+        "volcanoTitle": "Volcano 3",
+        "level": 1,
+        "activity": "Minor volcanic unrest.",
+        "hazards": "Volcanic unrest hazards."
+      }
+    }
+  ]
+}
