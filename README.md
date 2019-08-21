@@ -47,9 +47,9 @@ from aio_geojson_geonetnz_volcano import GeonetnzVolcanoFeed
 async def main() -> None:
     async with ClientSession() as websession:    
         # Home Coordinates: Latitude: -41.2, Longitude: 174.7
-        # MMI: 2
         # Filter radius: 200 km
-        feed = GeonetnzVolcanoFeed(websession, (-41.2, 174.7),
+        feed = GeonetnzVolcanoFeed(websession, 
+                                   (-41.2, 174.7),
                                    filter_radius=200)
         status, entries = await feed.update()
         print(status)
