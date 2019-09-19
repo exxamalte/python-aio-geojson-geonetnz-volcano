@@ -1,6 +1,7 @@
 """Feed Manager for GeoNet NZ Volcanic Alert Level feed."""
 import logging
 
+from aio_geojson_client.consts import UPDATE_OK_NO_DATA, UPDATE_ERROR
 from aio_geojson_client.feed_manager import FeedManagerBase
 from aiohttp import ClientSession
 
@@ -14,14 +15,14 @@ class GeonetnzVolcanoFeedManager(FeedManagerBase):
 
     def __init__(self, websession: ClientSession, generate_callback,
                  update_callback, remove_callback,
-                 home_coordinates, filter_radius=None, status_callback=None):
+                 home_coordinates, filter_radius=None):
         """Initialize the GeoNet NZ Volcanic Alert Level Feed Manager."""
         feed = GeonetnzVolcanoFeed(
             websession,
             home_coordinates,
             filter_radius=filter_radius)
         super().__init__(feed, generate_callback, update_callback,
-                         remove_callback, status_callback)
+                         remove_callback, None)
 
     async def _store_feed_entries(self, status, feed_entries):
         """Keep a copy of all feed entries for future lookups."""
@@ -35,3 +36,11 @@ class GeonetnzVolcanoFeedManager(FeedManagerBase):
         """Do not remove entities."""
         _LOGGER.debug("Not removing entries %s", feed_external_ids)
         return 0
+
+    async def _status_update(self, status, count_created, count_updated,
+                             count_removed):
+        """Update entities if feed update did not provide data."""
+        if status == UPDATE_OK_NO_DATA or status == UPDATE_ERROR \
+                or (count_created == 0 and count_updated == 0):
+            _LOGGER.debug("Updating entries %s", self._managed_external_ids)
+            await self._update_entities(self._managed_external_ids)
