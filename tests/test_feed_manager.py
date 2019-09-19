@@ -2,7 +2,11 @@
 import aiohttp
 import pytest
 
-from aio_geojson_geonetnz_volcano.feed_manager import GeonetnzVolcanoFeedManager
+from asynctest import patch, CoroutineMock
+
+from aio_geojson_client.consts import UPDATE_OK_NO_DATA
+from aio_geojson_geonetnz_volcano.feed_manager import \
+    GeonetnzVolcanoFeedManager
 from tests.utils import load_fixture
 
 
@@ -47,12 +51,97 @@ async def test_feed_manager(aresponses, event_loop):
                                      "home=(-41.2, 174.7), url=https://" \
                                      "api.geonet.org.nz/volcano/val, " \
                                      "radius=None)>)>"
+
         await feed_manager.update()
         entries = feed_manager.feed_entries
         assert entries is not None
         assert len(entries) == 3
         assert feed_manager.last_timestamp is None
-            # == datetime.datetime(2019, 7, 24, 19, 0, 0, tzinfo=pytz.utc)
         assert len(generated_entity_external_ids) == 3
         assert len(updated_entity_external_ids) == 0
         assert len(removed_entity_external_ids) == 0
+
+        # Simulate an update with empty result.
+        generated_entity_external_ids.clear()
+        updated_entity_external_ids.clear()
+        removed_entity_external_ids.clear()
+
+        aresponses.add(
+            'api.geonet.org.nz',
+            '/volcano/val',
+            'get',
+            aresponses.Response(text=load_fixture('val-2.json'),
+                                status=200),
+            match_querystring=True,
+        )
+
+        await feed_manager.update()
+        entries = feed_manager.feed_entries
+        assert entries is not None
+        assert len(entries) == 3
+        assert len(generated_entity_external_ids) == 0
+        assert len(updated_entity_external_ids) == 0
+        assert len(removed_entity_external_ids) == 0
+
+        # Simulate an update with result.
+        generated_entity_external_ids.clear()
+        updated_entity_external_ids.clear()
+        removed_entity_external_ids.clear()
+
+        aresponses.add(
+            'api.geonet.org.nz',
+            '/volcano/val',
+            'get',
+            aresponses.Response(text=load_fixture('val-1.json'),
+                                status=200),
+            match_querystring=True,
+        )
+
+        await feed_manager.update()
+        entries = feed_manager.feed_entries
+        assert entries is not None
+        assert len(entries) == 3
+        assert len(generated_entity_external_ids) == 0
+        assert len(updated_entity_external_ids) == 3
+        assert len(removed_entity_external_ids) == 0
+        assert entries['volcano2'].title == "Volcano 2"
+
+        # Simulate an update with empty result.
+        generated_entity_external_ids.clear()
+        updated_entity_external_ids.clear()
+        removed_entity_external_ids.clear()
+
+        with patch("aio_geojson_client.feed.GeoJsonFeed._fetch",
+                   new_callable=CoroutineMock) as mock_fetch:
+            mock_fetch.return_value = (UPDATE_OK_NO_DATA, None)
+
+            await feed_manager.update()
+            entries = feed_manager.feed_entries
+
+            assert len(entries) == 3
+            assert len(generated_entity_external_ids) == 0
+            assert len(updated_entity_external_ids) == 0
+            assert len(removed_entity_external_ids) == 0
+
+        # Simulate an update with result.
+        generated_entity_external_ids.clear()
+        updated_entity_external_ids.clear()
+        removed_entity_external_ids.clear()
+
+        aresponses.add(
+            'api.geonet.org.nz',
+            '/volcano/val',
+            'get',
+            aresponses.Response(text=load_fixture('val-3.json'),
+                                status=200),
+            match_querystring=True,
+        )
+
+        await feed_manager.update()
+        entries = feed_manager.feed_entries
+        assert entries is not None
+        assert len(entries) == 4
+        assert len(generated_entity_external_ids) == 1
+        assert len(updated_entity_external_ids) == 2
+        assert len(removed_entity_external_ids) == 0
+        assert entries['volcano2'].title == "Volcano 2 UPDATED"

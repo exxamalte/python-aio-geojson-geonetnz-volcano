@@ -9,7 +9,7 @@ DESCRIPTION = "An async GeoJSON client library for GeoNet NZ Volcanic Alert Leve
 URL = "https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano"
 
 REQUIRES = [
-    'aio_geojson_client>=0.7',
+    'aio_geojson_client>=0.9',
     'aiohttp>=3.5.4',
     'pytz>=2019.01',
 ]
