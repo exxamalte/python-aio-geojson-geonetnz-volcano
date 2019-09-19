@@ -4,7 +4,7 @@ import pytest
 
 from asynctest import patch, CoroutineMock
 
-from aio_geojson_client.consts import UPDATE_OK_NO_DATA
+from aio_geojson_client.consts import UPDATE_OK_NO_DATA, UPDATE_ERROR
 from aio_geojson_geonetnz_volcano.feed_manager import \
     GeonetnzVolcanoFeedManager
 from tests.utils import load_fixture
@@ -80,7 +80,8 @@ async def test_feed_manager(aresponses, event_loop):
         assert entries is not None
         assert len(entries) == 3
         assert len(generated_entity_external_ids) == 0
-        assert len(updated_entity_external_ids) == 0
+        # Instead of removing entities, we're just updating existing ones.
+        assert len(updated_entity_external_ids) == 3
         assert len(removed_entity_external_ids) == 0
 
         # Simulate an update with result.
@@ -105,6 +106,8 @@ async def test_feed_manager(aresponses, event_loop):
         assert len(updated_entity_external_ids) == 3
         assert len(removed_entity_external_ids) == 0
         assert entries['volcano2'].title == "Volcano 2"
+        last_update = feed_manager.last_update
+        last_update_successful = feed_manager.last_update_successful
 
         # Simulate an update with empty result.
         generated_entity_external_ids.clear()
@@ -120,8 +123,37 @@ async def test_feed_manager(aresponses, event_loop):
 
             assert len(entries) == 3
             assert len(generated_entity_external_ids) == 0
-            assert len(updated_entity_external_ids) == 0
+            # Instead of removing entities, we're just updating existing ones.
+            assert len(updated_entity_external_ids) == 3
             assert len(removed_entity_external_ids) == 0
+            assert feed_manager.last_update is not last_update
+            assert feed_manager.last_update_successful \
+                is not last_update_successful
+            last_update = feed_manager.last_update
+            last_update_successful = feed_manager.last_update_successful
+
+        # Simulate an update with error result.
+        generated_entity_external_ids.clear()
+        updated_entity_external_ids.clear()
+        removed_entity_external_ids.clear()
+
+        with patch("aio_geojson_client.feed.GeoJsonFeed._fetch",
+                   new_callable=CoroutineMock) as mock_fetch:
+            mock_fetch.return_value = (UPDATE_ERROR, None)
+
+            await feed_manager.update()
+            entries = feed_manager.feed_entries
+
+            assert len(entries) == 3
+            assert len(generated_entity_external_ids) == 0
+            # Instead of removing entities, we're just updating existing ones.
+            assert len(updated_entity_external_ids) == 3
+            assert len(removed_entity_external_ids) == 0
+            assert feed_manager.last_update is not last_update
+            assert feed_manager.last_update_successful \
+                == last_update_successful
+            last_update = feed_manager.last_update
+            last_update_successful = feed_manager.last_update_successful
 
         # Simulate an update with result.
         generated_entity_external_ids.clear()
@@ -145,3 +177,6 @@ async def test_feed_manager(aresponses, event_loop):
         assert len(updated_entity_external_ids) == 2
         assert len(removed_entity_external_ids) == 0
         assert entries['volcano2'].title == "Volcano 2 UPDATED"
+        assert feed_manager.last_update is not last_update
+        assert feed_manager.last_update_successful \
+            is not last_update_successful
