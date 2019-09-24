@@ -1,5 +1,8 @@
 # Changes
 
+## 0.4 (24/09/2019)
+* Bumped version of upstream GeoJSON library.
+
 ## 0.3 (20/09/2019)
 * Call update entities callback in the case where the feed update did not 
   fetch any data
