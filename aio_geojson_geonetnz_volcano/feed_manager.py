@@ -1,7 +1,7 @@
 """Feed Manager for GeoNet NZ Volcanic Alert Level feed."""
 import logging
 
-from aio_geojson_client.consts import UPDATE_OK_NO_DATA, UPDATE_ERROR
+from aio_geojson_client.consts import UPDATE_ERROR, UPDATE_OK_NO_DATA
 from aio_geojson_client.feed_manager import FeedManagerBase
 from aiohttp import ClientSession
 

@@ -1,10 +1,9 @@
 """Test for the GeoNet NZ Volcanic Alert Level GeoJSON feed manager."""
 import aiohttp
 import pytest
+from aio_geojson_client.consts import UPDATE_ERROR, UPDATE_OK_NO_DATA
+from asynctest import CoroutineMock, patch
 
-from asynctest import patch, CoroutineMock
-
-from aio_geojson_client.consts import UPDATE_OK_NO_DATA, UPDATE_ERROR
 from aio_geojson_geonetnz_volcano.feed_manager import GeonetnzVolcanoFeedManager
 from tests.utils import load_fixture
 
