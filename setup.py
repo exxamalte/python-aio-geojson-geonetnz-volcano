@@ -10,7 +10,7 @@ URL = "https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano"
 
 REQUIRES = [
     'aio_geojson_client>=0.11',
-    'aiohttp>=3.5.4',
+    'aiohttp>=3.7.4,<4',
     'pytz>=2019.01',
 ]
 
