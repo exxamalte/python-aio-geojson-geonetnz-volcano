@@ -1,7 +1,6 @@
 """Test for the GeoNet NZ Volcanic Alert Level GeoJSON feed."""
 import aiohttp
 import pytest
-
 from aio_geojson_client.consts import UPDATE_OK
 
 from aio_geojson_geonetnz_volcano.consts import ATTRIBUTION

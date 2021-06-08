@@ -8,6 +8,7 @@ from aio_geojson_client.feed import GeoJsonFeed
 from aiohttp import ClientSession
 
 from aio_geojson_geonetnz_volcano.consts import URL
+
 from .feed_entry import GeonetnzVolcanoFeedEntry
 
 _LOGGER = logging.getLogger(__name__)
