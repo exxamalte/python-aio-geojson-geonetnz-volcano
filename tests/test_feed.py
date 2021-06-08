@@ -14,20 +14,21 @@ async def test_update_ok(aresponses, event_loop):
     """Test updating feed is ok."""
     home_coordinates = (-41.2, 174.7)
     aresponses.add(
-        'api.geonet.org.nz',
-        '/volcano/val',
-        'get',
-        aresponses.Response(text=load_fixture('val-1.json'),
-                            status=200),
+        "api.geonet.org.nz",
+        "/volcano/val",
+        "get",
+        aresponses.Response(text=load_fixture("val-1.json"), status=200),
         match_querystring=True,
     )
 
     async with aiohttp.ClientSession(loop=event_loop) as websession:
 
         feed = GeonetnzVolcanoFeed(websession, home_coordinates)
-        assert repr(feed) == "<GeonetnzVolcanoFeed(home=(-41.2, 174.7), " \
-                             "url=https://api.geonet.org.nz/volcano/val, " \
-                             "radius=None)>"
+        assert (
+            repr(feed) == "<GeonetnzVolcanoFeed(home=(-41.2, 174.7), "
+            "url=https://api.geonet.org.nz/volcano/val, "
+            "radius=None)>"
+        )
         status, entries = await feed.update()
         assert status == UPDATE_OK
         assert entries is not None
@@ -60,20 +61,21 @@ async def test_empty_feed(aresponses, event_loop):
     """Test updating feed is ok when feed does not contain any entries."""
     home_coordinates = (-41.2, 174.7)
     aresponses.add(
-        'api.geonet.org.nz',
-        '/volcano/val',
-        'get',
-        aresponses.Response(text=load_fixture('val-2.json'),
-                            status=200),
+        "api.geonet.org.nz",
+        "/volcano/val",
+        "get",
+        aresponses.Response(text=load_fixture("val-2.json"), status=200),
         match_querystring=True,
     )
 
     async with aiohttp.ClientSession(loop=event_loop) as websession:
 
         feed = GeonetnzVolcanoFeed(websession, home_coordinates)
-        assert repr(feed) == "<GeonetnzVolcanoFeed(home=(-41.2, 174.7), " \
-                             "url=https://api.geonet.org.nz/volcano/val, " \
-                             "radius=None)>"
+        assert (
+            repr(feed) == "<GeonetnzVolcanoFeed(home=(-41.2, 174.7), "
+            "url=https://api.geonet.org.nz/volcano/val, "
+            "radius=None)>"
+        )
         status, entries = await feed.update()
         assert status == UPDATE_OK
         assert entries is not None

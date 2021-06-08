@@ -16,17 +16,18 @@ _LOGGER = logging.getLogger(__name__)
 class GeonetnzVolcanoFeed(GeoJsonFeed):
     """GeoNet NZ Volcanic Alert Level feed."""
 
-    def __init__(self, websession: ClientSession, home_coordinates,
-                 filter_radius=None):
+    def __init__(self, websession: ClientSession, home_coordinates, filter_radius=None):
         """Initialise this service."""
-        super().__init__(websession, home_coordinates, URL,
-                         filter_radius=filter_radius)
+        super().__init__(websession, home_coordinates, URL, filter_radius=filter_radius)
 
     def __repr__(self):
         """Return string representation of this feed."""
-        return '<{}(home={}, url={}, radius={})>'.\
-            format(self.__class__.__name__, self._home_coordinates, self._url,
-                   self._filter_radius)
+        return "<{}(home={}, url={}, radius={})>".format(
+            self.__class__.__name__,
+            self._home_coordinates,
+            self._url,
+            self._filter_radius,
+        )
 
     def _new_entry(self, home_coordinates, feature, global_data):
         """Generate a new entry."""
