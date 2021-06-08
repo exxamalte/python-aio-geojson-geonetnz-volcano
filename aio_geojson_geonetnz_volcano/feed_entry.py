@@ -4,8 +4,14 @@ from typing import Optional
 
 from aio_geojson_client.feed_entry import FeedEntry
 
-from .consts import ATTR_ACTIVITY, ATTR_HAZARDS, ATTR_LEVEL, ATTR_VOLCANO_ID, \
-    ATTR_VOLCANO_TITLE, ATTRIBUTION
+from .consts import (
+    ATTR_ACTIVITY,
+    ATTR_HAZARDS,
+    ATTR_LEVEL,
+    ATTR_VOLCANO_ID,
+    ATTR_VOLCANO_TITLE,
+    ATTRIBUTION,
+)
 
 _LOGGER = logging.getLogger(__name__)
 

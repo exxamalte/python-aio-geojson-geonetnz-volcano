@@ -5,8 +5,7 @@ import pytest
 from asynctest import patch, CoroutineMock
 
 from aio_geojson_client.consts import UPDATE_OK_NO_DATA, UPDATE_ERROR
-from aio_geojson_geonetnz_volcano.feed_manager import \
-    GeonetnzVolcanoFeedManager
+from aio_geojson_geonetnz_volcano.feed_manager import GeonetnzVolcanoFeedManager
 from tests.utils import load_fixture
 
 
@@ -15,11 +14,10 @@ async def test_feed_manager(aresponses, event_loop):
     """Test the feed manager."""
     home_coordinates = (-41.2, 174.7)
     aresponses.add(
-        'api.geonet.org.nz',
-        '/volcano/val',
-        'get',
-        aresponses.Response(text=load_fixture('val-1.json'),
-                            status=200),
+        "api.geonet.org.nz",
+        "/volcano/val",
+        "get",
+        aresponses.Response(text=load_fixture("val-1.json"), status=200),
         match_querystring=True,
     )
 
@@ -42,15 +40,20 @@ async def test_feed_manager(aresponses, event_loop):
             """Remove entity."""
             removed_entity_external_ids.append(external_id)
 
-        feed_manager = GeonetnzVolcanoFeedManager(websession, _generate_entity,
-                                                _update_entity,
-                                                _remove_entity,
-                                                home_coordinates)
-        assert repr(feed_manager) == "<GeonetnzVolcanoFeedManager(" \
-                                     "feed=<GeonetnzVolcanoFeed(" \
-                                     "home=(-41.2, 174.7), url=https://" \
-                                     "api.geonet.org.nz/volcano/val, " \
-                                     "radius=None)>)>"
+        feed_manager = GeonetnzVolcanoFeedManager(
+            websession,
+            _generate_entity,
+            _update_entity,
+            _remove_entity,
+            home_coordinates,
+        )
+        assert (
+            repr(feed_manager) == "<GeonetnzVolcanoFeedManager("
+            "feed=<GeonetnzVolcanoFeed("
+            "home=(-41.2, 174.7), url=https://"
+            "api.geonet.org.nz/volcano/val, "
+            "radius=None)>)>"
+        )
 
         await feed_manager.update()
         entries = feed_manager.feed_entries
@@ -67,11 +70,10 @@ async def test_feed_manager(aresponses, event_loop):
         removed_entity_external_ids.clear()
 
         aresponses.add(
-            'api.geonet.org.nz',
-            '/volcano/val',
-            'get',
-            aresponses.Response(text=load_fixture('val-2.json'),
-                                status=200),
+            "api.geonet.org.nz",
+            "/volcano/val",
+            "get",
+            aresponses.Response(text=load_fixture("val-2.json"), status=200),
             match_querystring=True,
         )
 
@@ -90,11 +92,10 @@ async def test_feed_manager(aresponses, event_loop):
         removed_entity_external_ids.clear()
 
         aresponses.add(
-            'api.geonet.org.nz',
-            '/volcano/val',
-            'get',
-            aresponses.Response(text=load_fixture('val-1.json'),
-                                status=200),
+            "api.geonet.org.nz",
+            "/volcano/val",
+            "get",
+            aresponses.Response(text=load_fixture("val-1.json"), status=200),
             match_querystring=True,
         )
 
@@ -105,7 +106,7 @@ async def test_feed_manager(aresponses, event_loop):
         assert len(generated_entity_external_ids) == 0
         assert len(updated_entity_external_ids) == 3
         assert len(removed_entity_external_ids) == 0
-        assert entries['volcano2'].title == "Volcano 2"
+        assert entries["volcano2"].title == "Volcano 2"
         last_update = feed_manager.last_update
         last_update_successful = feed_manager.last_update_successful
 
@@ -114,8 +115,9 @@ async def test_feed_manager(aresponses, event_loop):
         updated_entity_external_ids.clear()
         removed_entity_external_ids.clear()
 
-        with patch("aio_geojson_client.feed.GeoJsonFeed._fetch",
-                   new_callable=CoroutineMock) as mock_fetch:
+        with patch(
+            "aio_geojson_client.feed.GeoJsonFeed._fetch", new_callable=CoroutineMock
+        ) as mock_fetch:
             mock_fetch.return_value = (UPDATE_OK_NO_DATA, None)
 
             await feed_manager.update()
@@ -127,8 +129,7 @@ async def test_feed_manager(aresponses, event_loop):
             assert len(updated_entity_external_ids) == 3
             assert len(removed_entity_external_ids) == 0
             assert feed_manager.last_update is not last_update
-            assert feed_manager.last_update_successful \
-                is not last_update_successful
+            assert feed_manager.last_update_successful is not last_update_successful
             last_update = feed_manager.last_update
             last_update_successful = feed_manager.last_update_successful
 
@@ -137,8 +138,9 @@ async def test_feed_manager(aresponses, event_loop):
         updated_entity_external_ids.clear()
         removed_entity_external_ids.clear()
 
-        with patch("aio_geojson_client.feed.GeoJsonFeed._fetch",
-                   new_callable=CoroutineMock) as mock_fetch:
+        with patch(
+            "aio_geojson_client.feed.GeoJsonFeed._fetch", new_callable=CoroutineMock
+        ) as mock_fetch:
             mock_fetch.return_value = (UPDATE_ERROR, None)
 
             await feed_manager.update()
@@ -150,8 +152,7 @@ async def test_feed_manager(aresponses, event_loop):
             assert len(updated_entity_external_ids) == 3
             assert len(removed_entity_external_ids) == 0
             assert feed_manager.last_update is not last_update
-            assert feed_manager.last_update_successful \
-                == last_update_successful
+            assert feed_manager.last_update_successful == last_update_successful
             last_update = feed_manager.last_update
             last_update_successful = feed_manager.last_update_successful
 
@@ -161,11 +162,10 @@ async def test_feed_manager(aresponses, event_loop):
         removed_entity_external_ids.clear()
 
         aresponses.add(
-            'api.geonet.org.nz',
-            '/volcano/val',
-            'get',
-            aresponses.Response(text=load_fixture('val-3.json'),
-                                status=200),
+            "api.geonet.org.nz",
+            "/volcano/val",
+            "get",
+            aresponses.Response(text=load_fixture("val-3.json"), status=200),
             match_querystring=True,
         )
 
@@ -176,7 +176,6 @@ async def test_feed_manager(aresponses, event_loop):
         assert len(generated_entity_external_ids) == 1
         assert len(updated_entity_external_ids) == 2
         assert len(removed_entity_external_ids) == 0
-        assert entries['volcano2'].title == "Volcano 2 UPDATED"
+        assert entries["volcano2"].title == "Volcano 2 UPDATED"
         assert feed_manager.last_update is not last_update
-        assert feed_manager.last_update_successful \
-            is not last_update_successful
+        assert feed_manager.last_update_successful is not last_update_successful
