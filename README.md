@@ -1,7 +1,7 @@
 # python-aio-geojson-geonetnz-volcano
 
-[![Build Status](https://travis-ci.org/exxamalte/python-aio-geojson-geonetnz-volcano.svg)](https://travis-ci.org/exxamalte/python-aio-geojson-geonetnz-volcano)
-[![Coverage Status](https://coveralls.io/repos/github/exxamalte/python-aio-geojson-geonetnz-volcano/badge.svg?branch=master)](https://coveralls.io/github/exxamalte/python-aio-geojson-geonetnz-volcano?branch=master)
+[![Build Status](https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano/workflows/CI/badge.svg?branch=master)](https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano/actions?workflow=CI)
+[![codecov](https://codecov.io/gh/exxamalte/python-aio-geojson-geonetnz-volcano/branch/master/graph/badge.svg?token=RCSVB3QRER)](https://codecov.io/gh/exxamalte/python-aio-geojson-geonetnz-volcano)
 [![PyPi](https://img.shields.io/pypi/v/aio-geojson-geonetnz-volcano.svg)](https://pypi.python.org/pypi/aio-geojson-geonetnz-volcano)
 [![Version](https://img.shields.io/pypi/pyversions/aio-geojson-geonetnz-volcano.svg)](https://pypi.python.org/pypi/aio-geojson-geonetnz-volcano)
 
