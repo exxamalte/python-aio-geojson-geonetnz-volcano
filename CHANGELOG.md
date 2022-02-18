@@ -1,5 +1,13 @@
 # Changes
 
+## 0.7 (18/02/2022)
+* No functional changes.
+* Added Python 3.10 support.
+* Removed Python 3.6 support.
+* Bumped version of upstream GeoJSON library.
+* Bumped library versions: black, flake8, isort.
+* Migrated to github actions.
+
 ## 0.6 (08/06/2021)
 * Python 3.9 compatibility.
 * Add license tag.
