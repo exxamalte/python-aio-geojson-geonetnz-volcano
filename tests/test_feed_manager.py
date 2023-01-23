@@ -2,7 +2,7 @@
 import aiohttp
 import pytest
 from aio_geojson_client.consts import UPDATE_ERROR, UPDATE_OK_NO_DATA
-from asynctest import CoroutineMock, patch
+import mock as async_mock
 
 from aio_geojson_geonetnz_volcano.feed_manager import GeonetnzVolcanoFeedManager
 from tests.utils import load_fixture
@@ -114,8 +114,8 @@ async def test_feed_manager(aresponses, event_loop):
         updated_entity_external_ids.clear()
         removed_entity_external_ids.clear()
 
-        with patch(
-            "aio_geojson_client.feed.GeoJsonFeed._fetch", new_callable=CoroutineMock
+        with async_mock.patch(
+            "aio_geojson_client.feed.GeoJsonFeed._fetch", new_callable=async_mock.AsyncMock
         ) as mock_fetch:
             mock_fetch.return_value = (UPDATE_OK_NO_DATA, None)
 
@@ -137,8 +137,8 @@ async def test_feed_manager(aresponses, event_loop):
         updated_entity_external_ids.clear()
         removed_entity_external_ids.clear()
 
-        with patch(
-            "aio_geojson_client.feed.GeoJsonFeed._fetch", new_callable=CoroutineMock
+        with async_mock.patch(
+            "aio_geojson_client.feed.GeoJsonFeed._fetch", new_callable=async_mock.AsyncMock
         ) as mock_fetch:
             mock_fetch.return_value = (UPDATE_ERROR, None)
 
