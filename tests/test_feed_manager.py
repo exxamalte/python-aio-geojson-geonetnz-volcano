@@ -1,8 +1,9 @@
 """Test for the GeoNet NZ Volcanic Alert Level GeoJSON feed manager."""
+from unittest import mock as async_mock
+
 import aiohttp
 import pytest
 from aio_geojson_client.consts import UPDATE_ERROR, UPDATE_OK_NO_DATA
-import mock as async_mock
 
 from aio_geojson_geonetnz_volcano.feed_manager import GeonetnzVolcanoFeedManager
 from tests.utils import load_fixture
@@ -21,7 +22,6 @@ async def test_feed_manager(aresponses, event_loop):
     )
 
     async with aiohttp.ClientSession(loop=event_loop) as websession:
-
         # This will just record calls and keep track of external ids.
         generated_entity_external_ids = []
         updated_entity_external_ids = []
@@ -115,7 +115,8 @@ async def test_feed_manager(aresponses, event_loop):
         removed_entity_external_ids.clear()
 
         with async_mock.patch(
-            "aio_geojson_client.feed.GeoJsonFeed._fetch", new_callable=async_mock.AsyncMock
+            "aio_geojson_client.feed.GeoJsonFeed._fetch",
+            new_callable=async_mock.AsyncMock,
         ) as mock_fetch:
             mock_fetch.return_value = (UPDATE_OK_NO_DATA, None)
 
@@ -138,7 +139,8 @@ async def test_feed_manager(aresponses, event_loop):
         removed_entity_external_ids.clear()
 
         with async_mock.patch(
-            "aio_geojson_client.feed.GeoJsonFeed._fetch", new_callable=async_mock.AsyncMock
+            "aio_geojson_client.feed.GeoJsonFeed._fetch",
+            new_callable=async_mock.AsyncMock,
         ) as mock_fetch:
             mock_fetch.return_value = (UPDATE_ERROR, None)
 
