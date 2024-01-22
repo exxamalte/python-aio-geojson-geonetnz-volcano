@@ -1,4 +1,6 @@
 """Test for the GeoNet NZ Volcanic Alert Level GeoJSON feed manager."""
+import asyncio
+from http import HTTPStatus
 from unittest import mock as async_mock
 
 import aiohttp
@@ -10,18 +12,16 @@ from tests.utils import load_fixture
 
 
 @pytest.mark.asyncio
-async def test_feed_manager(aresponses, event_loop):
+async def test_feed_manager(mock_aioresponse):
     """Test the feed manager."""
     home_coordinates = (-41.2, 174.7)
-    aresponses.add(
-        "api.geonet.org.nz",
-        "/volcano/val",
-        "get",
-        aresponses.Response(text=load_fixture("val-1.json"), status=200),
-        match_querystring=True,
+    mock_aioresponse.get(
+        "https://api.geonet.org.nz/volcano/val",
+        status=HTTPStatus.OK,
+        body=load_fixture("val-1.json"),
     )
 
-    async with aiohttp.ClientSession(loop=event_loop) as websession:
+    async with aiohttp.ClientSession(loop=asyncio.get_running_loop()) as websession:
         # This will just record calls and keep track of external ids.
         generated_entity_external_ids = []
         updated_entity_external_ids = []
@@ -68,12 +68,10 @@ async def test_feed_manager(aresponses, event_loop):
         updated_entity_external_ids.clear()
         removed_entity_external_ids.clear()
 
-        aresponses.add(
-            "api.geonet.org.nz",
-            "/volcano/val",
-            "get",
-            aresponses.Response(text=load_fixture("val-2.json"), status=200),
-            match_querystring=True,
+        mock_aioresponse.get(
+            "https://api.geonet.org.nz/volcano/val",
+            status=HTTPStatus.OK,
+            body=load_fixture("val-2.json"),
         )
 
         await feed_manager.update()
@@ -90,12 +88,10 @@ async def test_feed_manager(aresponses, event_loop):
         updated_entity_external_ids.clear()
         removed_entity_external_ids.clear()
 
-        aresponses.add(
-            "api.geonet.org.nz",
-            "/volcano/val",
-            "get",
-            aresponses.Response(text=load_fixture("val-1.json"), status=200),
-            match_querystring=True,
+        mock_aioresponse.get(
+            "https://api.geonet.org.nz/volcano/val",
+            status=HTTPStatus.OK,
+            body=load_fixture("val-1.json"),
         )
 
         await feed_manager.update()
@@ -162,12 +158,10 @@ async def test_feed_manager(aresponses, event_loop):
         updated_entity_external_ids.clear()
         removed_entity_external_ids.clear()
 
-        aresponses.add(
-            "api.geonet.org.nz",
-            "/volcano/val",
-            "get",
-            aresponses.Response(text=load_fixture("val-3.json"), status=200),
-            match_querystring=True,
+        mock_aioresponse.get(
+            "https://api.geonet.org.nz/volcano/val",
+            status=HTTPStatus.OK,
+            body=load_fixture("val-3.json"),
         )
 
         await feed_manager.update()

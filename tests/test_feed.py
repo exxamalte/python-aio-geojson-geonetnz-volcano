@@ -1,4 +1,7 @@
 """Test for the GeoNet NZ Volcanic Alert Level GeoJSON feed."""
+import asyncio
+from http import HTTPStatus
+
 import aiohttp
 import pytest
 from aio_geojson_client.consts import UPDATE_OK
@@ -9,19 +12,16 @@ from tests.utils import load_fixture
 
 
 @pytest.mark.asyncio
-async def test_update_ok(aresponses, event_loop):
+async def test_update_ok(mock_aioresponse):
     """Test updating feed is ok."""
     home_coordinates = (-41.2, 174.7)
-    aresponses.add(
-        "api.geonet.org.nz",
-        "/volcano/val",
-        "get",
-        aresponses.Response(text=load_fixture("val-1.json"), status=200),
-        match_querystring=True,
+    mock_aioresponse.get(
+        "https://api.geonet.org.nz/volcano/val",
+        status=HTTPStatus.OK,
+        body=load_fixture("val-1.json"),
     )
 
-    async with aiohttp.ClientSession(loop=event_loop) as websession:
-
+    async with aiohttp.ClientSession(loop=asyncio.get_running_loop()) as websession:
         feed = GeonetnzVolcanoFeed(websession, home_coordinates)
         assert (
             repr(feed) == "<GeonetnzVolcanoFeed(home=(-41.2, 174.7), "
@@ -56,19 +56,16 @@ async def test_update_ok(aresponses, event_loop):
 
 
 @pytest.mark.asyncio
-async def test_empty_feed(aresponses, event_loop):
+async def test_empty_feed(mock_aioresponse):
     """Test updating feed is ok when feed does not contain any entries."""
     home_coordinates = (-41.2, 174.7)
-    aresponses.add(
-        "api.geonet.org.nz",
-        "/volcano/val",
-        "get",
-        aresponses.Response(text=load_fixture("val-2.json"), status=200),
-        match_querystring=True,
+    mock_aioresponse.get(
+        "https://api.geonet.org.nz/volcano/val",
+        status=HTTPStatus.OK,
+        body=load_fixture("val-2.json"),
     )
 
-    async with aiohttp.ClientSession(loop=event_loop) as websession:
-
+    async with aiohttp.ClientSession(loop=asyncio.get_running_loop()) as websession:
         feed = GeonetnzVolcanoFeed(websession, home_coordinates)
         assert (
             repr(feed) == "<GeonetnzVolcanoFeed(home=(-41.2, 174.7), "
