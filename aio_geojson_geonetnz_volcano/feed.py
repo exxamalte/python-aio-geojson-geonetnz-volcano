@@ -1,4 +1,6 @@
 """GeoNet NZ Volcanic Alert Level feed."""
+from __future__ import annotations
+
 import logging
 from datetime import datetime
 from typing import Optional
@@ -38,8 +40,8 @@ class GeonetnzVolcanoFeed(GeoJsonFeed):
         """Return now with timezone."""
         return datetime.now(pytz.utc)
 
-    def _extract_last_timestamp(self, feed_entries) -> Optional[datetime]:
-        """This feed does not provide a timestamp."""
+    def _extract_last_timestamp(self, feed_entries) -> datetime | None:
+        """Extract timestamp. This feed does not provide a timestamp."""
         return None
 
     def _extract_from_feed(self, feed) -> Optional:

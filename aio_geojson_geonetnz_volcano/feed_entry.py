@@ -1,6 +1,7 @@
 """GeoNet NZ Volcanic Alert Level feed entry."""
+from __future__ import annotations
+
 import logging
-from typing import Optional
 
 from aio_geojson_client.feed_entry import FeedEntry
 
@@ -29,26 +30,26 @@ class GeonetnzVolcanoFeedEntry(FeedEntry):
         return ATTRIBUTION
 
     @property
-    def external_id(self) -> Optional[str]:
+    def external_id(self) -> str | None:
         """Return the external id of this entry."""
         return self._search_in_properties(ATTR_VOLCANO_ID)
 
     @property
-    def title(self) -> Optional[str]:
+    def title(self) -> str | None:
         """Return the title of this entry."""
         return self._search_in_properties(ATTR_VOLCANO_TITLE)
 
     @property
-    def alert_level(self) -> Optional[int]:
+    def alert_level(self) -> int | None:
         """Return the volcanic alert level of this entry."""
         return self._search_in_properties(ATTR_LEVEL)
 
     @property
-    def hazards(self) -> Optional[str]:
+    def hazards(self) -> str | None:
         """Return the hazards of this entry."""
         return self._search_in_properties(ATTR_HAZARDS)
 
     @property
-    def activity(self) -> Optional[str]:
+    def activity(self) -> str | None:
         """Return the quality of this entry."""
         return self._search_in_properties(ATTR_ACTIVITY)
