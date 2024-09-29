@@ -1,11 +1,12 @@
 """Test for the GeoNet NZ Volcanic Alert Level GeoJSON feed manager."""
+
 import asyncio
 from http import HTTPStatus
 from unittest import mock as async_mock
 
+from aio_geojson_client.consts import UPDATE_ERROR, UPDATE_OK_NO_DATA
 import aiohttp
 import pytest
-from aio_geojson_client.consts import UPDATE_ERROR, UPDATE_OK_NO_DATA
 
 from aio_geojson_geonetnz_volcano.feed_manager import GeonetnzVolcanoFeedManager
 from tests.utils import load_fixture

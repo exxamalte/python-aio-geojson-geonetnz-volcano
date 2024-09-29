@@ -1,10 +1,11 @@
 """Test for the GeoNet NZ Volcanic Alert Level GeoJSON feed."""
+
 import asyncio
 from http import HTTPStatus
 
+from aio_geojson_client.consts import UPDATE_OK
 import aiohttp
 import pytest
-from aio_geojson_client.consts import UPDATE_OK
 
 from aio_geojson_geonetnz_volcano.consts import ATTRIBUTION
 from aio_geojson_geonetnz_volcano.feed import GeonetnzVolcanoFeed
