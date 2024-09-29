@@ -1,4 +1,5 @@
 """GeoNet NZ Volcanic Alert Level feed entry."""
+
 from __future__ import annotations
 
 import logging

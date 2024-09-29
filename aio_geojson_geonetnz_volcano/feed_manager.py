@@ -1,4 +1,5 @@
 """Feed Manager for GeoNet NZ Volcanic Alert Level feed."""
+
 import logging
 
 from aio_geojson_client.consts import UPDATE_ERROR, UPDATE_OK_NO_DATA
@@ -44,10 +45,8 @@ class GeonetnzVolcanoFeedManager(FeedManagerBase):
 
     async def _status_update(self, status, count_created, count_updated, count_removed):
         """Update entities if feed update did not provide data."""
-        if (
-            status == UPDATE_OK_NO_DATA
-            or status == UPDATE_ERROR
-            or (count_created == 0 and count_updated == 0)
+        if status in (UPDATE_OK_NO_DATA, UPDATE_ERROR) or (
+            count_created == 0 and count_updated == 0
         ):
             _LOGGER.debug("Updating entries %s", self._managed_external_ids)
             await self._update_entities(self._managed_external_ids)
