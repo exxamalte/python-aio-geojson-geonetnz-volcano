@@ -1,3 +1,52 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aio_geojson_geonetnz_volcano"
+version  = "0.9"
+requires-python = ">= 3.9"
+authors = [
+  {name = "Malte Franken", email = "coding@subspace.de"},
+]
+description = "An async GeoJSON client library for GeoNet NZ Volcanic Alert Level feed."
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["homeassistant", "geojson", "geonetnz", "volcano"]
+classifiers = [
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Development Status :: 5 - Production/Stable",
+]
+dependencies = [
+    "aio_geojson_client>=0.20",
+    "aiohttp>=3.7.4,<4",
+    "pytz>=2019.01",
+]
+
+[project.optional-dependencies]
+tests = [
+    "pytest-asyncio",
+    "pytest-timeout",
+    "pytest-xdist",
+    "pytest-cov",
+    "coverage",
+    "mock",
+    "aioresponses",
+]
+
+[project.urls]
+Repository = "https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano"
+Issues = "https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano/issues"
+Changelog = "https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano/blob/main/CHANGELOG.md"
+
 [tool.ruff.lint]
 select = [
     "A001", # Variable {name} is shadowing a Python builtin
