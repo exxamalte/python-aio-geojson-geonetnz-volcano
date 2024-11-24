@@ -45,7 +45,7 @@ tests = [
 [project.urls]
 Repository = "https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano"
 Issues = "https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano/issues"
-Changelog = "https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano/blob/main/CHANGELOG.md"
+Changelog = "https://github.com/exxamalte/python-aio-geojson-geonetnz-volcano/blob/master/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 include = ["aio_geojson_geonetnz_volcano*"]
