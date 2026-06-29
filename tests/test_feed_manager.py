@@ -13,10 +13,10 @@ from tests.utils import load_fixture
 
 
 @pytest.mark.asyncio
-async def test_feed_manager(mock_aioresponse):
+async def test_feed_manager(mock_aiointercept):
     """Test the feed manager."""
     home_coordinates = (-41.2, 174.7)
-    mock_aioresponse.get(
+    mock_aiointercept.get(
         "https://api.geonet.org.nz/volcano/val",
         status=HTTPStatus.OK,
         body=load_fixture("val-1.json"),
@@ -69,7 +69,7 @@ async def test_feed_manager(mock_aioresponse):
         updated_entity_external_ids.clear()
         removed_entity_external_ids.clear()
 
-        mock_aioresponse.get(
+        mock_aiointercept.get(
             "https://api.geonet.org.nz/volcano/val",
             status=HTTPStatus.OK,
             body=load_fixture("val-2.json"),
@@ -89,7 +89,7 @@ async def test_feed_manager(mock_aioresponse):
         updated_entity_external_ids.clear()
         removed_entity_external_ids.clear()
 
-        mock_aioresponse.get(
+        mock_aiointercept.get(
             "https://api.geonet.org.nz/volcano/val",
             status=HTTPStatus.OK,
             body=load_fixture("val-1.json"),
@@ -159,7 +159,7 @@ async def test_feed_manager(mock_aioresponse):
         updated_entity_external_ids.clear()
         removed_entity_external_ids.clear()
 
-        mock_aioresponse.get(
+        mock_aiointercept.get(
             "https://api.geonet.org.nz/volcano/val",
             status=HTTPStatus.OK,
             body=load_fixture("val-3.json"),
